@@ -197,6 +197,15 @@ const UploadForm = () => {
                         className="hidden"
                     />
                     <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label="Upload PDF file"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                +e.preventDefault()
+                                pdfInputRef.current?.click()
+                            }
+                        }}
                         onClick={() => pdfInputRef.current?.click()}
                         onDragOver={handlePdfDragOver}
                         onDragLeave={handlePdfDragLeave}
@@ -207,7 +216,7 @@ const UploadForm = () => {
                             : pdfFile
                                 ? 'border-brand bg-brand-50/40'
                                 : 'border-dashed border-brand hover:border-brand bg-amber-50/50 hover:bg-gray-100'
-                        }min-h-[160px] flex items-center justify-center p-8 mb-12`}
+                        } min-h-[160px] flex items-center justify-center p-8 mb-12`}
                     >
                         {pdfFile ? (
                             <div className="flex items-center justify-between w-full px-6 py-4">
@@ -255,6 +264,15 @@ const UploadForm = () => {
                         className="hidden"
                     />
                     <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label="Upload PDF file"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                +e.preventDefault()
+                                pdfInputRef.current?.click()
+                            }
+                        }}
                         onClick={() => coverInputRef.current?.click()}
                         onDragOver={handleCoverDragOver}
                         onDragLeave={handleCoverDragLeave}
@@ -299,7 +317,7 @@ const UploadForm = () => {
                             </div>
                         )}
                     </div>
-                    {errors.coverImage && <p className="upload-dropzone-remove mt-1.5">{errors.coverImage.message}</p>}
+                    {errors.coverImage && <p className="form-error mt-1.5">{errors.coverImage.message}</p>}
                 </div>
 
                 {/* Title Input */}
