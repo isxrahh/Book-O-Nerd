@@ -8,6 +8,7 @@ declare module "@clerk/nextjs" {
   export const SignUpButton: any;
   export const UserButton: any;
   export const Protect: any;
+  export const useUser: any;
   export default any;
 }
 
