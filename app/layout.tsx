@@ -6,6 +6,7 @@ import React from "react";
 
 import Navbar from "@/components/Navbar";
 import {ClerkProvider} from "@clerk/nextjs";
+import {Toaster} from "sonner";
 
 
 const ibmPlexSerif = IBM_Plex_Serif({
@@ -49,6 +50,7 @@ export default function RootLayout({
             >
             <Navbar/>
             {children}
+            <Toaster/>
             </body>
             </html>
         </ClerkProvider>
