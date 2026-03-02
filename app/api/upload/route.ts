@@ -4,9 +4,9 @@ import {auth} from "@clerk/nextjs/server";
 import {MAX_FILE_SIZE} from "@/lib/constants";
 
 export async function POST(request: Request): Promise<NextResponse> {
-    const body = (await request.json()) as HandleUploadBody;
 
     try {
+        const body = (await request.json()) as HandleUploadBody;
         const jsonResponse = await handleUpload({
             token:process.env.BLOB_READ_WRITE_TOKEN,
             body,
@@ -35,8 +35,15 @@ export async function POST(request: Request): Promise<NextResponse> {
         });
         return NextResponse.json(jsonResponse)
     } catch (e) {
-        const message = e instanceof Error ? e.message : 'An unknown error occurred';
-        const status = message.includes('Unauthorized') ? 401 : 500;
-        return NextResponse.json({error: message}, {status});
+        const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred';
+        const status = errorMessage.includes('Unauthorized') ? 401 : 500;
+
+        // Log full error server-side for debugging
+        console.error('Upload API error:', {error: e, message: errorMessage, status});
+
+        // Determine client-safe message based on status code
+        const clientMessage = status === 500 ? 'Internal server error' : (status === 401 ? 'Unauthorized' : 'An error occurred');
+
+        return NextResponse.json({error: clientMessage}, {status});
     }
 }

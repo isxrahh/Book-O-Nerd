@@ -10,7 +10,8 @@ declare module "@clerk/nextjs" {
     export const Protect: any;
     export const useUser: any;
     export const useAuth: any;
-    export default any;
+    const _default: any;
+    export default _default;
 }
 
 declare module "@clerk/nextjs/server" {
@@ -20,6 +21,7 @@ declare module "@clerk/nextjs/server" {
 
     export function auth(...args: any[]): any;
 
-    export default any;
+    const _default: any;
+    export default _default;
 }
 

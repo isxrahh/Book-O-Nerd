@@ -1,7 +1,7 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import {clsx, type ClassValue} from 'clsx';
+import {twMerge} from 'tailwind-merge';
 import {TextSegment} from "@/type";
-import { DEFAULT_VOICE, voiceOptions } from './constants';
+import {DEFAULT_VOICE, voiceOptions} from './constants';
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -105,12 +105,12 @@ export async function parsePDFFile(file: File) {
         const arrayBuffer = await file.arrayBuffer();
 
         // Load PDF document
-        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+        const loadingTask = pdfjsLib.getDocument({data: arrayBuffer});
         const pdfDocument = await loadingTask.promise;
 
         // Render first page as cover image
         const firstPage = await pdfDocument.getPage(1);
-        const viewport = firstPage.getViewport({ scale: 2 }); // 2x scale for better quality
+        const viewport = firstPage.getViewport({scale: 2}); // 2x scale for better quality
 
         const canvas = document.createElement('canvas');
         canvas.width = viewport.width;
