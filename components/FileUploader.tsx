@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useCallback, useRef } from 'react';
-import { useController, FieldValues } from 'react-hook-form';
-import { X } from 'lucide-react';
-import { FileUploadFieldProps } from '@/type';
-import { cn } from '@/lib/utils';
-import { FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import React, {useCallback, useRef} from 'react';
+import {useController, FieldValues} from 'react-hook-form';
+import {X} from 'lucide-react';
+import {FileUploadFieldProps} from '@/type';
+import {cn} from '@/lib/utils';
+import {FormItem, FormLabel, FormControl, FormMessage} from '@/components/ui/form';
 
 const FileUploader = <T extends FieldValues>({
                                                  control,
@@ -18,8 +18,8 @@ const FileUploader = <T extends FieldValues>({
                                                  hint,
                                              }: FileUploadFieldProps<T>) => {
     const {
-        field: { onChange, value },
-    } = useController({ name, control });
+        field: {onChange, value},
+    } = useController({name, control});
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,6 +56,15 @@ const FileUploader = <T extends FieldValues>({
                         isUploaded && 'upload-dropzone-uploaded'
                     )}
                     onClick={() => !disabled && inputRef.current?.click()}
+                    onKeyDown={(e) => {
+                        if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+                            e.preventDefault();
+                            inputRef.current?.click();
+                        }
+                    }}
+                    aria-disabled={disabled}
+                    role="button"
+                    tabIndex={disabled ? -1 : 0}
                 >
                     <input
                         type="file"
@@ -74,19 +83,19 @@ const FileUploader = <T extends FieldValues>({
                                 onClick={onRemove}
                                 className="upload-dropzone-remove mt-2"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-5 h-5"/>
                             </button>
                         </div>
                     ) : (
                         <>
-                            <Icon className="upload-dropzone-icon" />
+                            <Icon className="upload-dropzone-icon"/>
                             <p className="upload-dropzone-text">{placeholder}</p>
                             <p className="upload-dropzone-hint">{hint}</p>
                         </>
                     )}
                 </div>
             </FormControl>
-            <FormMessage />
+            <FormMessage/>
         </FormItem>
     );
 };
