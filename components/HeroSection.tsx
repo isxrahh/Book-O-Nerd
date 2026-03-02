@@ -23,7 +23,7 @@ const hero_items = [
 const HeroSection = () => {
     return (
         <section>
-            <div className="wrapper pt-28 md:mb-16 mb-10">
+            <div className="wrapper md:mb-16 mb-10">
                 <div className="library-hero-card">
                     <div className="library-hero-content">
                         <div className="library-hero-text">
