@@ -6,7 +6,7 @@ import {getCurrentBillingPeriodStart} from "@/lib/subscription-constants";
 import {auth} from "@clerk/nextjs/server";
 
 
-export const startVoiceSession = async (bookId: string): Promise<StartSessionResult> => {
+export const startVoiceSession = async (bookId: string, _id: string): Promise<StartSessionResult> => {
     try {
         const {userId} = await auth();
         if (!userId) return {success: false, error: "Unauthorized"};
