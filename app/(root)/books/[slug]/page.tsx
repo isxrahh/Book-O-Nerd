@@ -18,7 +18,7 @@ const BookDetailsPage = async ({params}: { params: Promise<{ slug: string }> }) 
     const {slug} = await params
 
     // Fetch book from database
-    const result = await getBookBySlug(slug)
+    const result = await getBookBySlug({slug, clerkId: userId})
 
     // Redirect to home if book not found
     if (!result.success || !result.data) {

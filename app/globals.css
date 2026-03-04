@@ -1108,101 +1108,101 @@ button[data-variant='unstyled'] *,
     font-size: 1.125rem;
 }
 
-    /* ===========================================
-       BOOK DETAILS PAGE
-       =========================================== */
-    .book-page-container {
-        @apply max-w-4xl mx-auto px-5 pt-24 pb-18 min-h-screen;
-    }
+/* ===========================================
+   BOOK DETAILS PAGE
+   =========================================== */
+.book-page-container {
+    @apply max-w-4xl mx-auto px-5 pt-24 pb-18 min-h-screen;
+}
 
-    .vapi-header-card {
-        @apply flex gap-6 rounded-xl p-8 bg-[#f3e4c7];
-    }
+.vapi-header-card {
+    @apply flex gap-6 rounded-xl p-8 bg-[#f3e4c7];
+}
 
-    .book-title {
-        @apply font-serif text-3xl font-bold text-[#212a3b] mb-2;
-    }
+.book-title {
+    @apply font-serif text-3xl font-bold text-[#212a3b] mb-2;
+}
 
-    .book-subtitle {
-        @apply text-lg text-[#3d485e] mb-6;
-    }
+.book-subtitle {
+    @apply text-lg text-[#3d485e] mb-6;
+}
 
-    .vapi-mic-btn {
-        @apply absolute -bottom-2 -right-2 w-[60px] h-[60px] rounded-full bg-white border-2 border-white shadow-lg flex items-center justify-center cursor-pointer transition-all hover:scale-105;
-    }
+.vapi-mic-btn {
+    @apply absolute -bottom-2 -right-2 w-[60px] h-[60px] rounded-full bg-white border-2 border-white shadow-lg flex items-center justify-center cursor-pointer transition-all hover:scale-105;
+}
 
-    .vapi-status-indicator {
-        @apply flex flex-wrap gap-3;
-    }
+.vapi-status-indicator {
+    @apply flex flex-wrap gap-3;
+}
 
-    .vapi-status-badge {
-        @apply inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-sm font-medium text-[#212a3b];
-    }
+.vapi-status-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-sm font-medium text-[#212a3b];
+}
 
-    .vapi-status-dot {
-        @apply inline-block w-2 h-2 rounded-full bg-[#9ca3af];
-    }
+.vapi-status-dot {
+    @apply inline-block w-2 h-2 rounded-full bg-[#9ca3af];
+}
 
-    .vapi-status-text {
-        @apply text-[#212a3b];
-    }
+.vapi-status-text {
+    @apply text-[#212a3b];
+}
 
-    .transcript-container {
-        @apply min-h-[400px] rounded-xl bg-white p-8 flex items-center justify-center;
-    }
+.transcript-container {
+    @apply min-h-[400px] rounded-xl bg-white p-8 flex items-center justify-center;
+}
 
-    .transcript-empty {
-        @apply text-center;
-    }
+.transcript-empty {
+    @apply text-center;
+}
 
-    .transcript-empty-text {
-        @apply font-bold text-xl text-[#212a3b] mb-2;
-    }
+.transcript-empty-text {
+    @apply font-bold text-xl text-[#212a3b] mb-2;
+}
 
-    .transcript-empty-hint {
-        @apply text-[#3d485e];
-    }
+.transcript-empty-hint {
+    @apply text-[#3d485e];
+}
 
-    .back-btn-floating {
-        @apply fixed top-24 left-6 w-12 h-12 rounded-full bg-white border-2 border-white shadow-lg flex items-center justify-center cursor-pointer transition-all hover:scale-105 z-40;
-    }
+.back-btn-floating {
+    @apply fixed top-24 left-6 w-12 h-12 rounded-full bg-white border-2 border-white shadow-lg flex items-center justify-center cursor-pointer transition-all hover:scale-105 z-40;
+}
 
-    /* ===========================================
-       TRANSCRIPT STYLES
-       =========================================== */
-    .vapi-transcript-wrapper {
-        @apply w-full;
-    }
+/* ===========================================
+   TRANSCRIPT STYLES
+   =========================================== */
+.vapi-transcript-wrapper {
+    @apply w-full;
+}
 
-    .transcript-messages {
-        @apply w-full flex flex-col gap-4;
-    }
+.transcript-messages {
+    @apply w-full flex flex-col gap-4;
+}
 
-    .transcript-message {
-        @apply flex w-full;
-    }
+.transcript-message {
+    @apply flex w-full;
+}
 
-    .transcript-message-user {
-        @apply justify-end;
-    }
+.transcript-message-user {
+    @apply justify-end;
+}
 
-    .transcript-message-assistant {
-        @apply justify-start;
-    }
+.transcript-message-assistant {
+    @apply justify-start;
+}
 
-    .transcript-bubble {
-        @apply max-w-[80%] px-4 py-3 rounded-lg break-words;
-    }
+.transcript-bubble {
+    @apply max-w-[80%] px-4 py-3 rounded-lg break-words;
+}
 
-    .transcript-bubble-user {
-        @apply bg-[#663820] text-white rounded-br-none;
-    }
+.transcript-bubble-user {
+    @apply bg-[#663820] text-white rounded-br-none;
+}
 
-    .transcript-bubble-assistant {
-        @apply bg-[#f3e4c7] text-[#212a3b] rounded-bl-none;
-    }
+.transcript-bubble-assistant {
+    @apply bg-[#f3e4c7] text-[#212a3b] rounded-bl-none;
+}
 
-    .transcript-cursor {
-        @apply ml-1 animate-pulse;
-    }
+.transcript-cursor {
+    @apply ml-1 animate-pulse;
+}
 
