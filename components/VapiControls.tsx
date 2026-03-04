@@ -13,7 +13,6 @@ const VapiControls = ({book}: { book: IBook }) => {
         messages,
         currentMessage,
         currentUserMessage,
-        currentMessages,
         start,
         stop
     } = useVapi(book)
@@ -82,7 +81,6 @@ const VapiControls = ({book}: { book: IBook }) => {
                 messages={messages}
                 currentMessage={currentMessage}
                 currentUserMessage={currentUserMessage}
-                currentMessages={currentMessages}
             />
         </>
     )
