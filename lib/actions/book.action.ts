@@ -107,3 +107,53 @@ export const saveBookSegments = async (bookId: string, clerkId: string, segments
     }
 }
 
+// New: searchBookSegments performs a MongoDB text search on the BookSegment collection for a given bookId and query.
+export const searchBookSegments = async (bookId: string, query: string, topN: number = 3) => {
+    try {
+        await connectToDatabase();
+
+        if (!bookId || !query) {
+            return { success: false, error: 'Missing bookId or query' };
+        }
+
+        // Use MongoDB text search (requires a text index on `content` which exists in the model)
+        const results = await BookSegment.find(
+            { bookId, $text: { $search: query } },
+            { content: 1, segmentIndex: 1, pageNumber: 1, wordCount: 1, score: { $meta: 'textScore' } }
+        ).sort({ score: { $meta: 'textScore' } }).limit(topN).lean();
+
+        return {
+            success: true,
+            data: serializeData(results || []),
+        };
+    } catch (e) {
+        console.error('Error searching book segments:', e);
+        return { success: false, error: e };
+    }
+}
+
+export const getBookBySlug = async (slug: string) => {
+    try {
+        await connectToDatabase();
+        const book = await Book.findOne({slug}).lean();
+
+        if (!book) {
+            return {
+                success: false,
+                data: null,
+            }
+        }
+
+        return {
+            success: true,
+            data: serializeData(book),
+        }
+    } catch (e) {
+        console.error('Error fetching book by slug:', e);
+        return {
+            success: false,
+            error: e,
+            data: null,
+        }
+    }
+}
