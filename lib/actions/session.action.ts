@@ -1,7 +1,7 @@
 'use server';
 import {EndSessionResult, StartSessionResult} from '@/type'
 import {connectToDatabase} from "@/database/mongoose";
-import VoiceSession from "@/database/models/voiceSession.model";
+import VoiceSession from "@/database/models/voice-session.model";
 import {getCurrentBillingPeriodStart} from "@/lib/subscription-constants";
 import {auth} from "@clerk/nextjs/server";
 

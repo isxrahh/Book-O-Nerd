@@ -1,61 +1,101 @@
-import {NextResponse} from 'next/server';
-import {searchBookSegments} from '@/lib/actions/book.action';
-import {auth} from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server';
 
-// POST /api/vapi/search-book
+import { searchBookSegments } from '@/lib/actions/book.action';
+
+// Helper function to process book search logic
+async function processBookSearch(bookId: unknown, query: unknown) {
+    // Validate inputs before conversion to prevent null/undefined becoming "null"/"undefined" strings
+    if (bookId == null || query == null || query === '') {
+        return { result: 'Missing bookId or query' };
+    }
+
+    // Convert bookId to string
+    const bookIdStr = String(bookId);
+    const queryStr = String(query).trim();
+
+    // Additional validation after conversion
+    if (!bookIdStr || bookIdStr === 'null' || bookIdStr === 'undefined' || !queryStr) {
+        return { result: 'Missing bookId or query' };
+    }
+
+    // Execute search
+    const searchResult = await searchBookSegments(bookIdStr, queryStr, 3);
+
+    // Return results
+    if (!searchResult.success || !searchResult.data?.length) {
+        return { result: 'No information found about this topic in the book.' };
+    }
+
+    const combinedText = searchResult.data
+        .map((segment) => (segment as { content: string }).content)
+        .join('\n\n');
+
+    return { result: combinedText };
+}
+
+export async function GET() {
+    return NextResponse.json({ status: 'ok' });
+}
+
+// Parse tool arguments that may arrive as a JSON string or an object
+function parseArgs(args: unknown): Record<string, unknown> {
+    if (!args) return {};
+    if (typeof args === 'string') {
+        try { return JSON.parse(args); } catch { return {}; }
+    }
+    return args as Record<string, unknown>;
+}
+
 export async function POST(request: Request) {
     try {
-        const {userId} = await auth();
-        if (!userId) {
-            return NextResponse.json({error: 'Unauthorized'}, {status: 401});
-        }
         const body = await request.json();
 
-        // Expecting Vapi tool call payload which may contain an array of calls or a single call.
-        // We'll support both shapes for robustness.
+        console.log('Vapi search-book request:', JSON.stringify(body, null, 2));
 
-        const calls = Array.isArray(body?.calls) ? body.calls : (body ? [body] : []);
+        // Support multiple Vapi formats
+        const functionCall = body?.message?.functionCall;
+        const toolCallList = body?.message?.toolCallList || body?.message?.toolCalls;
 
-        // Find the first call with name matching "search book" (case-insensitive)
-        const searchCall = calls.find((c: any) => {
-            const name = (c?.name || c?.tool || c?.toolName || '').toString().toLowerCase();
-            return name === 'search book' || name === 'search-book' || name === 'search_book';
+        // Handle single functionCall format
+        if (functionCall) {
+            const { name, parameters } = functionCall;
+            const parsed = parseArgs(parameters);
+
+            if (name === 'searchBook') {
+                const result = await processBookSearch(parsed.bookId, parsed.query);
+                return NextResponse.json(result);
+            }
+
+            return NextResponse.json({ result: `Unknown function: ${name}` });
+        }
+
+        // Handle toolCallList format (array of calls)
+        if (!toolCallList || toolCallList.length === 0) {
+            return NextResponse.json({
+                results: [{ result: 'No tool calls found' }],
+            });
+        }
+
+        const results = [];
+
+        for (const toolCall of toolCallList) {
+            const { id, function: func } = toolCall;
+            const name = func?.name;
+            const args = parseArgs(func?.arguments);
+
+            if (name === 'searchBook') {
+                const searchResult = await processBookSearch(args.bookId, args.query);
+                results.push({ toolCallId: id, ...searchResult });
+            } else {
+                results.push({ toolCallId: id, result: `Unknown function: ${name}` });
+            }
+        }
+
+        return NextResponse.json({ results });
+    } catch (error) {
+        console.error('Vapi search-book error:', error);
+        return NextResponse.json({
+            results: [{ result: 'Error processing request' }],
         });
-
-        if (!searchCall) {
-            return NextResponse.json({error: 'No search book call found'}, {status: 400});
-        }
-
-        // Parameters may live in different fields depending on Vapi shape; check common locations
-        const params = searchCall.params || searchCall.parameters || searchCall.args || searchCall.arguments || searchCall;
-
-        const bookId = params?.bookId || params?.book_id || params?.book || params?.bookID || params?.bookID;
-        const query = params?.query || params?.q || params?.text || params?.prompt;
-
-        if (!bookId || !query) {
-            return NextResponse.json({error: 'Missing bookId or query in search parameters'}, {status: 400});
-        }
-
-        const topN = params?.topN ? Number(params.topN) : 3;
-
-        const result = await searchBookSegments(bookId.toString(), query.toString(), topN, userId);
-
-        if (!result.success) {
-            return NextResponse.json({error: 'Search failed', details: result.error}, {status: 500});
-        }
-
-        const segments = result.data as Array<any>;
-
-        if (!segments || segments.length === 0) {
-            return NextResponse.json({result: 'no information found about this topic'});
-        }
-
-        // Combine segment contents separated by double new lines
-        const combined = segments.map(s => s.content || s).join('\n\n');
-
-        return NextResponse.json({result: combined});
-    } catch (e: any) {
-        console.error('Vapi search-book route error:', e);
-        return NextResponse.json({error: e?.message || 'Internal server error'}, {status: 500});
     }
 }
