@@ -5,6 +5,8 @@ import {sampleBooks} from "@/lib/constants";
 import BookCard from "@/components/BookCard";
 import {getAllBooks} from "@/lib/actions/book.action";
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
     const bookResults = await getAllBooks()
     const books = bookResults.success ? bookResults.data ?? [] : []

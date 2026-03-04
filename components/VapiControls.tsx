@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React from 'react'
 import Image from 'next/image'           // ← added
 import {Mic, MicOff} from "lucide-react"   // ← fixed: added MicOff
 import {useVapi} from "@/hooks/useVapi"
@@ -18,7 +18,7 @@ const VapiControls = ({book}: { book: IBook }) => {
         stop
     } = useVapi(book)
 
-    const [isActive, setIsActive] = useState(false)
+    const isActive = status === 'listening' || status === 'thinking' || status === 'speaking' || status === 'connecting'
 
     return (
         <>
@@ -43,9 +43,9 @@ const VapiControls = ({book}: { book: IBook }) => {
                         className={`vapi-mic-btn shadow-md !w-[60px] !h-[60px] z-10 ${isActive ? 'vapi-mic-btn-active' : 'vapi-mic-btn-inactive'}`}
                     >
                         {isActive ? (
-                            <Mic className="size-7 text-white" />
+                            <Mic className="size-7 text-white"/>
                         ) : (
-                            <MicOff className="size-7 text-[#212a3b]" />
+                            <MicOff className="size-7 text-[#212a3b]"/>
                         )}
                     </button>
                 </div>
