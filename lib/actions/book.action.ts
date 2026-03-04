@@ -124,7 +124,7 @@ export const createBook = async (data: CreateBook) => {
     }
 }
 
-export const getBookBySlug = async (slug: string) => {
+export const getBookBySlug = async (slug: { slug: string; clerkId: any }) => {
     try {
         await connectToDatabase();
 
