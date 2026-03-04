@@ -1,6 +1,6 @@
+import {TextSegment} from '@/type';
 import {clsx, type ClassValue} from 'clsx';
 import {twMerge} from 'tailwind-merge';
-import {TextSegment} from "@/type";
 import {DEFAULT_VOICE, voiceOptions} from './constants';
 
 
@@ -122,8 +122,9 @@ export async function parsePDFFile(file: File) {
         }
 
         await firstPage.render({
+            canvas: null,
             canvasContext: context,
-            viewport: viewport,
+            viewport: viewport
         }).promise;
 
         // Convert canvas to data URL
@@ -136,8 +137,8 @@ export async function parsePDFFile(file: File) {
             const page = await pdfDocument.getPage(pageNum);
             const textContent = await page.getTextContent();
             const pageText = textContent.items
-                .filter((item: any) => 'str' in item)
-                .map((item: { str: string; }) => (item as { str: string }).str)
+                .filter((item) => 'str' in item)
+                .map((item) => (item as { str: string }).str)
                 .join(' ');
             fullText += pageText + '\n';
         }
